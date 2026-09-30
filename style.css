@@ -147,8 +147,8 @@ ol.list li::before { counter-increment: r; content: counter(r) "."; color: var(-
 .battle-text .caret { position: absolute; right: 14px; bottom: 8px; font-size: 9px; color: #C62828; animation: blink 1s steps(2) infinite; visibility: hidden; }
 .battle-text.prompt .caret { visibility: visible; }
 
-.controls { display: grid; grid-template-columns: 1.3fr 1fr; gap: 14px; }
-.moves { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-content: start; }
+.controls { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 14px; }
+.moves { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-content: start; }
 .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
 .move { --tc: #9E9E9E; position: relative; font: inherit; cursor: pointer; text-align: left; color: #fff; border: 3px solid #1D1A24; border-radius: 12px; padding: 10px 12px 9px; text-shadow: 1px 1px 0 rgba(0, 0, 0, .55);
   background: linear-gradient(180deg, color-mix(in srgb, var(--tc) 80%, #fff) 0%, var(--tc) 45%, color-mix(in srgb, var(--tc) 75%, #000) 100%);
@@ -175,7 +175,7 @@ ol.list li::before { counter-increment: r; content: counter(r) "."; color: var(-
 .log .foe { color: #64B5F6; }
 .log .big { color: #FF6B6B; }
 @media (max-width: 760px) {
-  .controls { grid-template-columns: 1fr; }
+  .controls { grid-template-columns: minmax(0, 1fr); }
   .hud { width: 54%; padding: 6px 8px; border-left-width: 6px; }
   .hud-name { font-size: 9px; }
   .hud .badge { font-size: 7px; padding: 1px 4px; }
@@ -184,6 +184,11 @@ ol.list li::before { counter-increment: r; content: counter(r) "."; color: var(-
   .hud.foe { top: 8px; left: 8px; } .hud.me { right: 8px; bottom: 8px; }
   .stage-name { display: none; }
   .moves { gap: 10px; }
+}
+@media (max-width: 420px) {
+  .move { min-width: 0; padding: 9px 9px 8px; }
+  .move .mv-top { flex-wrap: wrap; gap: 2px 6px; }
+  .move .mv-name { font-size: 10px; }
 }
 
 /* animaciones de combate */

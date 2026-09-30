@@ -115,6 +115,11 @@ function openModal(html, { closable = true, cls = '', onClose } = {}) {
   const bg = document.createElement('div');
   bg.className = 'modal-bg';
   bg.innerHTML = `<div class="modal ${cls}" role="dialog" aria-modal="true">${closable ? '<button class="modal-x" type="button" aria-label="Cerrar">✕</button>' : ''}${html}</div>`;
+  // en el móvil, el toque con el que pasabas el diálogo no debe elegir nada en la ventana que se abre
+  const t0 = performance.now();
+  const guard = (e) => { if (performance.now() - t0 < 350) { e.stopPropagation(); e.preventDefault(); } };
+  bg.addEventListener('pointerdown', guard, true);
+  bg.addEventListener('click', guard, true);
   document.body.appendChild(bg);
   let closed = false;
   const close = (silent = false) => {
