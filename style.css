@@ -362,8 +362,12 @@ form.ipm-compose { display: flex; flex-direction: column; gap: 5px; padding: 6px
 @media (max-width: 560px) {
   .topbar { padding: 6px 10px; gap: 6px; }
   .brand span { display: none; }
+  .brand canvas { width: 36px; height: 36px; }
+  /* en el móvil los botones de iconos bajan a una segunda fila en vez de salirse de la pantalla */
+  .topbar .me { flex: 1; min-width: 0; flex-wrap: wrap; justify-content: flex-end; row-gap: 6px; }
+  .btn-voice { margin-left: 0; min-width: 36px; min-height: 32px; }
   .me-btn { padding: 2px 4px; font-size: 9px; min-width: 0; }
-  .me-btn > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 52vw; }
+  .me-btn > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 40vw; }
   main { padding: 10px; }
   .arena-head { flex-wrap: wrap; }
 }
@@ -403,6 +407,8 @@ form.ipm-compose { display: flex; flex-direction: column; gap: 5px; padding: 6px
 .town-hud .muted { color: var(--muted); }
 .town-help { font-size: 8px; color: var(--muted); line-height: 1.9; margin: 10px 2px 0; }
 .town-help b { color: var(--brand2); }
+.town-help .help-touch { display: none; }
+@media (pointer: coarse) { .town-help .help-keys { display: none; } .town-help .help-touch { display: inline; } }
 .town-dialog { position: absolute; left: 12px; right: 12px; bottom: 12px; background: #fffdf5; color: #1d1a24; border: 4px solid #2b2230; border-radius: 10px; box-shadow: inset 0 0 0 3px #e3d6b4, 0 5px 0 rgba(0,0,0,.35); padding: 14px 18px 18px; font-size: 11px; line-height: 2; min-height: 84px; cursor: pointer; user-select: none; }
 .town-dialog .who { position: absolute; top: -16px; left: 14px; background: var(--brand); color: #1a1a1a; border: 3px solid #2b2230; border-radius: 6px; padding: 2px 8px; font-size: 9px; }
 .town-dialog .more { position: absolute; right: 14px; bottom: 6px; font-size: 9px; animation: blink 1s steps(2) infinite; }
