@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Paximón</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="storygames.css">
+  <link rel="stylesheet" href="story.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><canvas id="brand-sprite" width="64" height="64"></canvas><span>PAXIMÓN</span></div>
+    <div class="me" id="me-info" hidden>
+      <button class="me-btn" id="btn-profile" type="button" title="Cambiar tu personaje o departamento">
+        <canvas id="me-avatar" width="16" height="22"></canvas>
+        <span><span id="me-nick"></span> <span class="record" id="me-record"></span><br><span id="me-dept"></span></span>
+      </button>
+      <button class="coins-btn" id="btn-bag" type="button" title="Tus paxicoins y tu mochila">
+        <img class="coin" id="me-coin-ico" alt=""><span id="me-coins">0</span><span class="bag-ico">🎒<i id="me-bag-n" hidden>0</i></span>
+      </button>
+      <button class="btn-voice diary-btn" id="btn-diary" type="button" title="Diario del modo historia (IPaxMsg)">📖</button>
+      <button class="btn-voice" id="btn-music" type="button" title="Música">🎵</button>
+      <button class="btn-voice" id="btn-voice" type="button" title="Voces y efectos">🔊</button>
+      <button class="btn-voice" id="btn-switch" type="button" title="Cambiar de usuario">⇄</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="screen active" id="screen-loading"><p class="loading blink">Cargando…</p></section>
+
+    <!-- ELEGIR USUARIO -->
+    <section class="screen" id="screen-users">
+      <div class="card center wide users-card">
+        <h1>¿Quién eres?</h1>
+        <p class="muted small">Elige tu usuario para entrar en Vila Paxina o crea uno nuevo. Los que ya están conectados no se pueden usar.</p>
+        <div class="users-bar">
+          <input id="users-search" placeholder="buscar…" autocomplete="off">
+          <button class="btn primary" id="btn-new-user" type="button">＋ Crear usuario nuevo</button>
+        </div>
+        <div class="users-list" id="users-list"></div>
+      </div>
+    </section>
+
+    <!-- ALTA -->
+    <section class="screen" id="screen-login">
+      <div class="card center wide">
+        <h1>¡Bienvenido a Paximón!</h1>
+        <p class="muted">Crea tu personaje para entrar en el pueblo. Empiezas con 5 paxicoins.</p>
+        <form id="login-form">
+          <input id="login-nick" maxlength="16" placeholder="apodo" autocomplete="off" required>
+          <div id="login-look"></div>
+          <div class="row-btns"><button class="btn" id="btn-login-back" type="button">⬅ Elegir usuario</button><button class="btn primary" type="submit">Entrar en el pueblo</button></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- PUEBLO -->
+    <section class="screen" id="screen-town">
+      <div class="town-wrap" id="town-wrap">
+        <div class="town-hud"><span id="town-name">Vila Paxina</span><span id="town-drunk"></span> <span class="muted">· <span id="town-online">0</span> conectados</span></div>
+        <div class="town-goal" id="town-goal" hidden></div>
+        <div class="town-dialog" id="town-dialog" hidden><div class="who"></div><div class="txt"></div><div class="opts"></div><div class="more">▼</div></div>
+      </div>
+      <p class="town-help">Flechas o WASD para moverte · Shift para correr · Espacio o E para hablar · Clic para ir a un sitio o ver a un jugador · Entra en la <b>Arena</b> para combatir · Por los caminos se sale a la <b>estación</b>, la <b>cafetería</b> y <b>Cambados</b></p>
+    </section>
+
+    <!-- ARENA -->
+    <section class="screen" id="screen-arena">
+      <div class="arena-head">
+        <button class="btn" id="btn-exit-arena" type="button">⬅ Salir al pueblo</button>
+        <h2>ARENA PAXIMÓN</h2>
+      </div>
+      <div class="lobby-grid">
+        <div class="card">
+          <h2>Jugar</h2>
+          <button class="btn primary big" id="btn-create">Crear sala</button>
+          <form id="join-form" class="row">
+            <input id="join-code" maxlength="4" placeholder="CÓDIGO" autocomplete="off" style="text-transform:uppercase">
+            <button class="btn" type="submit">Unirse</button>
+          </form>
+          <h3>Salas abiertas</h3>
+          <ul class="list" id="rooms"><li class="muted">Ninguna todavía</li></ul>
+          <h3>Conectados · reta a quien quieras</h3>
+          <ul class="list people" id="online"></ul>
+        </div>
+        <div class="card">
+          <h2>Cómo se juega</h2>
+          <div class="help" id="help"></div>
+          <h3>Ranking</h3>
+          <ol class="list" id="ranking"></ol>
+          <h3>Departamentos</h3>
+          <ol class="list" id="dept-ranking"></ol>
+        </div>
+        <div class="card span2">
+          <h2>Paximóns</h2>
+          <div class="roster" id="roster-lobby"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SALA DE ESPERA -->
+    <section class="screen" id="screen-room">
+      <div class="card center">
+        <h2>Sala creada</h2>
+        <p class="invite-note" id="room-invite" hidden></p>
+        <p class="muted">Código de la sala</p>
+        <div class="code" id="room-code">----</div>
+        <p class="muted blink">Esperando rival…</p>
+        <button class="btn" id="btn-cancel-room">Cancelar</button>
+      </div>
+    </section>
+
+    <!-- ELEGIR PAXIMÓN -->
+    <section class="screen" id="screen-pick">
+      <div class="card">
+        <h2>Elige tu Paximón <span class="muted" id="pick-vs"></span></h2>
+        <div class="roster" id="roster-pick"></div>
+        <p class="muted blink" id="pick-waiting" hidden>Esperando a que el rival elija…</p>
+      </div>
+    </section>
+
+    <!-- COMBATE -->
+    <section class="screen" id="screen-battle">
+      <div class="battle">
+        <div class="field" id="field">
+          <canvas class="stage" id="stage-a"></canvas>
+          <canvas class="stage" id="stage-b" hidden></canvas>
+          <div class="stage-name" id="stage-name"></div>
+          <div class="story-hud" id="story-hud"></div>
+          <div class="sprite-slot foe" id="foe-slot"><canvas id="foe-sprite" width="64" height="64"></canvas></div>
+          <div class="sprite-slot me" id="me-slot"><canvas id="me-sprite" width="64" height="64"></canvas></div>
+          <div class="hud foe" id="foe-hud">
+            <div class="hud-top"><span class="hud-name" id="foe-name"></span><span class="badge" id="foe-type"></span></div>
+            <div class="team-dots" id="foe-team"></div>
+            <div class="hud-owner" id="foe-owner"></div>
+            <div class="hud-hp"><b>PV</b><div class="hpbar"><div class="trail" id="foe-trail"></div><div class="hp" id="foe-hp"></div></div></div>
+            <div class="hud-row"><span class="pips" id="foe-ck"></span><span class="hptext" id="foe-hptext"></span></div>
+            <div class="stages" id="foe-stages"></div>
+          </div>
+          <div class="hud me" id="me-hud">
+            <div class="hud-top"><span class="hud-name" id="me-name"></span><span class="badge" id="me-type"></span></div>
+            <div class="team-dots" id="me-team"></div>
+            <div class="hud-owner" id="me-owner"></div>
+            <div class="hud-hp"><b>PV</b><div class="hpbar"><div class="trail" id="me-trail"></div><div class="hp" id="me-hp"></div></div></div>
+            <div class="hud-row"><span class="pips" id="me-ck"></span><span class="hptext" id="me-hptext"></span></div>
+            <div class="stages" id="me-stages"></div>
+          </div>
+        </div>
+        <div class="battle-text"><span id="turn-info"></span><span class="caret">▼</span></div>
+        <div class="controls">
+          <div class="cmd">
+            <div class="moves" id="moves"></div>
+            <div class="actions" id="actions"></div>
+            <div class="emote-tray" id="battle-emotes"></div>
+          </div>
+          <div class="log-wrap">
+            <div class="log-head"><span>Registro</span><button class="btn small danger" id="btn-forfeit">Rendirse</button></div>
+            <div class="log" id="log"></div>
+            <div id="chat-dock"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESULTADO -->
+    <section class="screen" id="screen-result">
+      <div class="card center result">
+        <div class="result-art"><canvas id="result-sprite" width="64" height="64"></canvas></div>
+        <h1 id="result-title"></h1>
+        <p id="result-text" class="muted"></p>
+        <p id="result-coins" class="result-coins" hidden></p>
+        <div class="row-btns">
+          <button class="btn" id="btn-back-town">Al pueblo</button>
+          <button class="btn primary" id="btn-back-arena">Volver a la Arena</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- CHAT + EMOTES (flotante): parodia de IPMsg LogViewer, el chat de la oficina -->
+  <div id="chat" class="chat ipm collapsed" hidden>
+    <button class="chat-head ipm-titlebar" id="chat-toggle" type="button" title="Abrir o minimizar el chat">
+      <img class="ipm-ico" alt="">
+      <span class="ipm-title">IPaxMsg LogViewer</span>
+      <span class="unread" id="chat-unread" hidden>0</span>
+      <span class="ipm-winbtns" aria-hidden="true"><i>—</i><i>☐</i><i>✕</i></span>
+    </button>
+    <div class="chat-body">
+      <div class="ipm-menu" aria-hidden="true"><span>File</span><span>Settings</span><span>Window</span><span>Print</span><span>Help</span></div>
+      <div class="ipm-tabs"><span class="ipm-tab"><span id="chat-scope">All</span> <b>×</b></span><span class="ipm-plus">+</span></div>
+      <div class="ipm-toolbar">
+        <div class="ipm-tools" id="chat-emotes"></div>
+        <select id="chat-filter" title="Filtrar por persona"><option value="">All Users</option></select>
+        <select tabindex="-1" title="Solo lo de esta sesión"><option>Entire period</option></select>
+      </div>
+      <div class="chat-msgs ipm-log" id="chat-msgs"></div>
+      <form id="chat-form" class="ipm-send">
+        <textarea id="chat-input" rows="2" maxlength="300" placeholder="Escribe aquí… (Enter envía, Mayús+Enter salta de línea; doble clic en un mensaje para citarlo)"></textarea>
+        <button class="ipm-btn" type="submit">Send</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" hidden></div>
+  <div id="ipm-pops"></div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

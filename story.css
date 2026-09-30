@@ -1,0 +1,129 @@
+/* Modo historia «A Última Páxina»: encargo en el pueblo, avisos del IPaxMsg, rótulos de capítulo,
+   sellos y páginas, diario, equipo, créditos y los añadidos del combate por equipos. */
+
+/* ---------- pueblo ---------- */
+.town-goal { position: absolute; left: 10px; top: 44px; max-width: min(520px, calc(100% - 20px)); background: rgba(20, 18, 26, .78); border: 2px solid var(--line); border-left: 5px solid var(--brand2); border-radius: 8px; padding: 5px 9px; font-size: 8px; line-height: 1.7; color: #FFF8E7; pointer-events: none; }
+.town-flash { position: absolute; inset: 0; pointer-events: none; animation: townFlash .7s ease-out forwards; z-index: 3; }
+@keyframes townFlash { 0% { opacity: .95; } 100% { opacity: 0; } }
+.town-canvas.shake, .field.shake { animation: storyShake .45s linear; }
+@keyframes storyShake { 0%, 100% { translate: 0 0; } 20% { translate: -6px 2px; } 40% { translate: 5px -3px; } 60% { translate: -4px 3px; } 80% { translate: 3px -1px; } }
+#btn-music.off { opacity: .45; text-decoration: line-through; }
+.diary-btn { position: relative; }
+
+/* ---------- avisos del IPaxMsg (abajo a la izquierda, como la ventanita del IPMsg) ---------- */
+#ipm-pops { position: fixed; left: 12px; bottom: 12px; display: flex; flex-direction: column; gap: 8px; z-index: 45; pointer-events: none; }
+.ipm-pop { pointer-events: auto; width: min(340px, calc(100vw - 24px)); border: 1px solid #9A9A9A; border-radius: 6px; overflow: hidden; box-shadow: 0 8px 22px rgba(0, 0, 0, .45); cursor: pointer; animation: popIn .35s cubic-bezier(.2, 1.4, .4, 1); }
+.ipm-pop .ipm-titlebar { cursor: pointer; min-height: 26px; }
+.ipm-pop .ipm-head .tm { color: #333; }
+.ipm-pop.out { animation: popOut .4s ease-in forwards; }
+@keyframes popIn { from { transform: translateY(40px) scale(.9); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes popOut { to { transform: translateX(-30px); opacity: 0; } }
+
+/* ---------- rótulo de capítulo ---------- */
+.story-title { position: fixed; inset: 0; z-index: 60; display: grid; place-content: center; text-align: center; gap: 14px; background: radial-gradient(circle at 50% 45%, #2b2140 0, #0b0912 70%); color: #FFF8E7; animation: titleIn .6s ease-out; padding: 16px; }
+.story-title .k { font-size: 11px; letter-spacing: 4px; color: var(--brand2); }
+.story-title .n { font-size: clamp(18px, 5vw, 34px); text-shadow: 0 4px 0 #000, 0 0 24px rgba(255, 193, 7, .35); line-height: 1.4; }
+.story-title .p { font-size: 8px; letter-spacing: 6px; color: var(--muted); margin-top: 18px; }
+.story-title.out { animation: titleOut .6s ease-in forwards; }
+@keyframes titleIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes titleOut { to { opacity: 0; } }
+
+/* ---------- selos, páginas y novedades ---------- */
+.story-badge { position: fixed; left: 50%; top: 16%; transform: translateX(-50%); z-index: 55; display: flex; align-items: center; gap: 14px; background: #FFF8E7; color: #2B2230; border: 4px solid #2B2230; border-radius: 14px; padding: 12px 18px; box-shadow: 0 8px 0 rgba(0, 0, 0, .45); animation: badgeIn .5s cubic-bezier(.2, 1.5, .4, 1); max-width: calc(100vw - 32px); }
+.story-badge b { display: block; font-size: 11px; }
+.story-badge span { display: block; font-size: 8px; color: #5d556b; margin-top: 4px; line-height: 1.6; }
+.story-badge .ico { width: 42px; height: 42px; flex: none; border-radius: 50%; display: grid; place-items: center; font-size: 24px; }
+.story-badge.selo .ico { background: #C62828; box-shadow: inset 0 0 0 4px #8E1B1B; }
+.story-badge.selo .ico::before { content: '★'; color: #FFE082; }
+.story-badge.paxina .ico { background: #FFC107; border-radius: 6px; box-shadow: inset 0 0 0 3px #E0A21C, 0 0 18px #FFD54F; }
+.story-badge.paxina .ico::before { content: '📜'; }
+.story-badge.item .ico { background: #4CBB3A; }
+.story-badge.item .ico::before { content: '✦'; color: #fff; }
+.story-badge.out { animation: badgeOut .5s ease-in forwards; }
+@keyframes badgeIn { from { transform: translate(-50%, -30px) scale(.6); opacity: 0; } to { transform: translate(-50%, 0) scale(1); opacity: 1; } }
+@keyframes badgeOut { to { transform: translate(-50%, -20px); opacity: 0; } }
+
+/* ---------- diario ---------- */
+.diary-modal { padding: 0; border-color: #9A9A9A; overflow: hidden; }
+.diary { background: #fff; color: #000; }
+.diary .ipm-titlebar { cursor: default; }
+.diary-body { max-height: min(76vh, 720px); overflow-y: auto; padding: 12px 14px 16px; display: grid; gap: 14px; }
+.diary-body h3 { font-family: var(--ipm-font); font-size: 13px; color: #1b1b1b; margin: 0 0 6px; }
+.diary-body .muted { color: #666; }
+.diary-goal { background: #FFF8E1; border: 1px solid #F0D48A; border-left: 5px solid #FF8F00; border-radius: 4px; padding: 10px 12px; }
+.diary-goal b { display: block; font-size: 12px; }
+.diary-goal .chap { font-size: 16px; font-weight: 700; }
+.diary-goal p { margin: 6px 0 0; }
+.selos { display: flex; flex-wrap: wrap; gap: 6px; }
+.selo { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; border: 2px dashed #bbb; color: #bbb; font-size: 16px; }
+.selo.on { border: 3px solid color-mix(in srgb, var(--c) 70%, #000); background: var(--c); color: #FFE082; box-shadow: 0 2px 0 #0003; }
+.diary-team, .team-slots, .team-box { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; }
+.member { display: flex; align-items: center; gap: 8px; border: 1px solid #ddd; border-radius: 6px; padding: 6px 8px; background: #fafafa; cursor: default; font-family: var(--ipm-font); font-size: 12px; }
+.member canvas { width: 48px; height: 48px; image-rendering: pixelated; flex: none; }
+.member > div { flex: 1; min-width: 0; }
+.member .small { font-size: 11px; }
+.hpbar.mini { display: block; height: 8px; margin: 3px 0; border-width: 1px; }
+.hpbar.mini .hp { position: absolute; left: 0; top: 0; bottom: 0; }
+.diary-log { max-height: 240px; border: 1px solid #ddd; }
+.diary-log .ipm-head .tm { color: #333; }
+.diary-reset { text-align: right; margin: 0; }
+/* organizar el equipo (en la cafetería) */
+.team-slots .member, .team-box .member { cursor: pointer; color: var(--text); background: var(--bg2); border: 2px solid var(--line); font-family: inherit; font-size: 9px; }
+.team-slots .member .muted, .team-box .member .muted { color: var(--muted); }
+.team-slots .member.on, .team-box .member.on { border-color: var(--brand2); background: #3a2f16; }
+.team-slots .member:first-child::after { content: '★'; color: var(--brand2); margin-left: 4px; }
+.roster.pick-story { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+.roster.pick-story .pcard { cursor: pointer; }
+
+/* ---------- créditos ---------- */
+.story-credits { position: fixed; inset: 0; z-index: 70; background: #07060b; color: #FFF8E7; overflow: hidden; animation: titleIn .8s ease-out; }
+.story-credits .roll { position: absolute; left: 50%; top: 100%; width: min(560px, calc(100% - 32px)); transform: translateX(-50%); text-align: center; animation: roll 58s linear forwards; }
+.story-credits h1 { font-size: clamp(18px, 5vw, 28px); color: var(--brand2); margin: 0 0 8px; }
+.story-credits h2 { font-size: 11px; color: var(--brand2); margin: 38px 0 12px; }
+.story-credits h2.last { margin-top: 70px; color: var(--muted); font-size: 9px; line-height: 2; }
+.story-credits ul { list-style: none; padding: 0; margin: 0; font-size: 9px; line-height: 2.4; }
+.story-credits .skip { position: absolute; right: 16px; bottom: 16px; }
+.story-credits.out { animation: titleOut .6s ease-in forwards; }
+@keyframes roll { from { top: 100%; } to { top: -260%; } }
+
+/* ---------- editor de personaje: complementos ---------- */
+.le-outfits { display: flex; flex-wrap: wrap; gap: 6px; }
+.le-outfits button { font: inherit; font-size: 8px; cursor: pointer; background: var(--bg2); color: var(--text); border: 2px solid var(--line); border-radius: 6px; padding: 6px 8px; }
+.le-outfits button.on { border-color: var(--brand2); background: #3a2f16; }
+
+/* ---------- tablón: el encargo clavado arriba ---------- */
+.ipm-entry.pinned { background: #FFF8E1; }
+.ipm-entry.pinned .ipm-head { background: #F6D77A; }
+
+/* ---------- combate por equipos ---------- */
+.team-dots { display: flex; gap: 4px; margin: 3px 0 1px; min-height: 0; }
+.team-dots:empty { display: none; }
+.team-dots i { width: 9px; height: 9px; border-radius: 50%; background: #FFF8E7; border: 2px solid #2B2230; box-shadow: inset 0 -2px 0 #0002; }
+.team-dots i.on { background: var(--tc, #FFC107); }
+.team-dots i.ko { background: #8a8494; opacity: .6; }
+.story-hud { position: absolute; top: 34px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; pointer-events: none; z-index: 2; }
+.story-hud:empty { display: none; }
+.story-hud span { font-size: 9px; color: #FFF8E7; background: rgba(20, 18, 26, .72); border: 2px solid rgba(255, 255, 255, .2); border-radius: 10px; padding: 3px 9px; white-space: nowrap; }
+.story-hud .likes { color: #FF80AB; }
+.story-hud .likes.foe { color: #B388FF; }
+.story-hud .clock.late { color: #FF5252; animation: blink 1s steps(2) infinite; }
+.story-hud .fields { color: #FFE082; }
+@keyframes blink { 50% { opacity: .4; } }
+/* mareado por la cata: el campo se balancea */
+.field.drunk { animation: fieldSway calc(3.2s - var(--sway, 1) * .35s) ease-in-out infinite; filter: saturate(calc(1 + var(--sway, 1) * .15)) blur(calc(var(--sway, 1) * .3px)); }
+@keyframes fieldSway { 0%, 100% { transform: rotate(calc(var(--sway, 1) * -.6deg)); } 50% { transform: rotate(calc(var(--sway, 1) * .6deg)) translateX(calc(var(--sway, 1) * 3px)); } }
+/* Cero Clics: la pantalla se queda en blanco */
+.field.whiteout::after { content: ''; position: absolute; inset: 0; background: #FFFFFF; opacity: var(--white, 0); pointer-events: none; transition: opacity 1.2s ease; z-index: 3; }
+.moves[data-mode="hidden"] .mv-name { font-style: italic; opacity: .85; }
+.moves[data-mode="errata"] .mv-name { color: #E1BEE7; }
+/* elegir quién sale */
+.swap-modal h2 { font-size: 12px; }
+.swap-list { display: grid; gap: 8px; }
+.swap-row { font: inherit; font-size: 9px; text-align: left; cursor: pointer; display: flex; align-items: center; gap: 10px; background: var(--bg2); color: var(--text); border: 2px solid var(--line); border-radius: 8px; padding: 6px 10px; }
+.swap-row:hover { border-color: var(--brand2); }
+.swap-row canvas { width: 48px; height: 48px; image-rendering: pixelated; flex: none; }
+.swap-row > span { flex: 1; display: grid; gap: 3px; }
+@media (max-width: 560px) {
+  .town-goal { top: 40px; font-size: 7px; }
+  .story-hud { top: 8px; }
+}
